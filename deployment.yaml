@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: downward-api-volume
+          mountPath: /etc/podinfo
+          readOnly: true
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+      volumes:
+      - name: downward-api-volume
+        downwardAPI:
+          items:
+          - path: "pod_name"
+            fieldRef:
+              fieldPath: metadata.name
+          - path: "namespace"
+            fieldRef:
+              fieldPath: metadata.namespace
+          - path: "node_name"
+            fieldRef:
+              fieldPath: spec.nodeName
+          - path: "pod_ip"
+            fieldRef:
+              fieldPath: status.podIP
+          - path: "pod_phase"
+            fieldRef:
+              fieldPath: status.phase
+          - path: "pod_restart_policy"
+            fieldRef:
+              fieldPath: spec.restartPolicy
+      - name: config-volume
+        configMap:
+          name: nginx-config
+

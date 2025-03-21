@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+
+        location /podinfo {
+            default_type application/json;
+            return 200 '{
+              "pod_name": "'$(cat /etc/podinfo/pod_name)'",
+              "namespace": "'$(cat /etc/podinfo/namespace)'",
+              "node_name": "'$(cat /etc/podinfo/node_name)'",
+              "pod_ip": "'$(cat /etc/podinfo/pod_ip)'",
+              "pod_phase": "'$(cat /etc/podinfo/pod_phase)'",
+              "restart_policy": "'$(cat /etc/podinfo/pod_restart_policy)'"
+            }';
+        }
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+    }
