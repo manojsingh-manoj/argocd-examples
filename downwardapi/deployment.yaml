@@ -23,7 +23,7 @@ spec:
           mountPath: /etc/podinfo  # Mounting the Downward API volume to this path
           readOnly: true
         - name: nginx-config-volume
-          mountPath: /etc/nginx
+          mountPath: /etc/nginx/nginx-test.conf
           subPath: nginx-test.conf  # Mount the config file as nginx.conf
         env:
         - name: POD_NAME
