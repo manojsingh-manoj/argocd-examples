@@ -24,11 +24,11 @@ data:
                 add_header Content-Type application/json;
 
                 return 200 '{
-                    "pod_name": "nginx-deployment-12345",
-                    "namespace": "default",
-                    "pod_uid": "a1b2c3d4-5678-9012-3456-789012345678",
-                    "node_name": "node-01",
-                    "pod_ip": "192.168.1.100"
+                  "pod_name": "$POD_NAME",
+                  "namespace": "$POD_NAMESPACE",
+                  "pod_uid": "$POD_UID",
+                  "node_name": "$NODE_NAME",
+                  "pod_ip": "$POD_IP"
                 }';
             }
         }
