@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: downwardapi
+  namespace: downwardapi  # Namespace where the Deployment should be created
 spec:
   replicas: 1
   selector:
@@ -20,34 +20,35 @@ spec:
         - containerPort: 80
         volumeMounts:
         - name: downward-api-volume
-          mountPath: /etc/podinfo
+          mountPath: /etc/podinfo  # Mounting the volume to this path
           readOnly: true
-        - name: config-volume
-          mountPath: /etc/nginx/conf.d
-          readOnly: true
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName  # Setting nodeName as an environment variable
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP  # Setting podIP as an environment variable
+        - name: POD_PHASE
+          valueFrom:
+            fieldRef:
+              fieldPath: status.phase  # Setting pod phase as an environment variable
+        - name: POD_RESTART_POLICY
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.restartPolicy  # Setting restartPolicy as an environment variable
       volumes:
       - name: downward-api-volume
         downwardAPI:
           items:
-          - path: "pod_name"
-            fieldRef:
-              fieldPath: metadata.name
-          - path: "namespace"
-            fieldRef:
-              fieldPath: metadata.namespace
-          - path: "node_name"
-            fieldRef:
-              fieldPath: spec.nodeName
-          - path: "pod_ip"
-            fieldRef:
-              fieldPath: status.podIP
-          - path: "pod_phase"
-            fieldRef:
-              fieldPath: status.phase
-          - path: "pod_restart_policy"
-            fieldRef:
-              fieldPath: spec.restartPolicy
-      - name: config-volume
-        configMap:
-          name: nginx-config
-
+            - path: "pod_name"
+              fieldRef:
+                fieldPath: metadata.name  # Pod name in a file
+            - path: "namespace"
+              fieldRef:
+                fieldPath: metadata.namespace  # Pod namespace in a file
+            - path: "pod_uid"
+              fieldRef:
+                fieldPath: metadata.uid  # Pod UID in a file

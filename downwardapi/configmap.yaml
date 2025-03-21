@@ -13,10 +13,11 @@ data:
             return 200 '{
               "pod_name": "'$(cat /etc/podinfo/pod_name)'",
               "namespace": "'$(cat /etc/podinfo/namespace)'",
-              "node_name": "'$(cat /etc/podinfo/node_name)'",
-              "pod_ip": "'$(cat /etc/podinfo/pod_ip)'",
-              "pod_phase": "'$(cat /etc/podinfo/pod_phase)'",
-              "restart_policy": "'$(cat /etc/podinfo/pod_restart_policy)'"
+              "pod_uid": "'$(cat /etc/podinfo/pod_uid)'",
+              "node_name": "$NODE_NAME",
+              "pod_ip": "$POD_IP",
+              "pod_phase": "$POD_PHASE",
+              "restart_policy": "$POD_RESTART_POLICY"
             }';
         }
 
