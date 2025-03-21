@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
-  namespace: downwardapi  # Make sure it's in the same namespace
+  namespace: downwardapi  # Ensure it's in the same namespace
 data:
   nginx.conf: |
     server {
@@ -12,12 +12,12 @@ data:
         location /podinfo {
             default_type application/json;
             add_header Content-Type application/json;
-            
-            # Read pod information from files created by Downward API
+
+            # Use environment variables injected by Downward API
             return 200 '{
-              "pod_name": "'$(cat /etc/podinfo/pod_name)'",
-              "namespace": "'$(cat /etc/podinfo/namespace)'",
-              "pod_uid": "'$(cat /etc/podinfo/pod_uid)'",
+              "pod_name": "$POD_NAME",
+              "namespace": "$POD_NAMESPACE",
+              "pod_uid": "$POD_UID",
               "node_name": "$NODE_NAME",
               "pod_ip": "$POD_IP"
             }';
