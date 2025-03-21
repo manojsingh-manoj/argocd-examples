@@ -2,24 +2,34 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
-  namespace: downwardapi  # Ensure it's in the same namespace
+  namespace: downwardapi  # Ensure it’s in the correct namespace
 data:
   nginx.conf: |
-    server {
-        listen 80;
-        server_name localhost;
+    worker_processes 1;
 
-        location /podinfo {
-            default_type application/json;
-            add_header Content-Type application/json;
+    events {
+        worker_connections 1024;
+    }
 
-            # Use environment variables injected by Downward API
-            return 200 '{
-            "pod_name": "nginx-deployment-12345",
-            "namespace": "default",
-            "pod_uid": "a1b2c3d4-5678-9012-3456-789012345678",
-            "node_name": "node-01",
-            "pod_ip": "192.168.1.100"
-            }';
+    http {
+        include       mime.types;
+        default_type  application/octet-stream;
+
+        server {
+            listen 80;
+            server_name localhost;
+
+            location /podinfo {
+                default_type application/json;
+                add_header Content-Type application/json;
+
+                return 200 '{
+                    "pod_name": "nginx-deployment-12345",
+                    "namespace": "default",
+                    "pod_uid": "a1b2c3d4-5678-9012-3456-789012345678",
+                    "node_name": "node-01",
+                    "pod_ip": "192.168.1.100"
+                }';
+            }
         }
     }
