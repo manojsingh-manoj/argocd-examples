@@ -4,7 +4,7 @@ metadata:
   name: nginx-config
   namespace: downwardapi  # Ensure it’s in the correct namespace
 data:
-  nginx.conf: |
+  nginx-test.conf: |
     worker_processes 1;
 
     events {
