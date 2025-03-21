@@ -10,5 +10,5 @@ spec:
     - protocol: TCP
       port: 80  # Port on the service
       targetPort: 80  # Port on the container (nginx)
-      nodePort: 30080  # The NodePort (accessible externally)
+      nodePort: 30090  # The NodePort (accessible externally)
   type: NodePort  # Type of service to expose it via NodePort
