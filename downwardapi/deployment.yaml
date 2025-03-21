@@ -22,11 +22,6 @@ spec:
         - name: downward-api-volume
           mountPath: /etc/podinfo  # Mounting the Downward API volume to this path
           readOnly: true
-        - name: nginx-config-volume
-          mountPath: /etc/nginx/nginx.conf  # Mount the nginx.conf file from the ConfigMap
-          subPath: nginx.conf  # Ensure the file is mounted as nginx.conf
-        - name: nginx-config-dir
-          mountPath: /etc/nginx/conf.d/  # Mount the conf.d directory for default.conf
         env:
         - name: POD_NAME
           valueFrom:
@@ -65,8 +60,4 @@ spec:
             - path: "pod_uid"
               fieldRef:
                 fieldPath: metadata.uid  # Pod UID in a file
-      - name: nginx-config-volume
-        configMap:
-          name: nginx-config  # Reference the ConfigMap containing the custom nginx.conf
-      - name: nginx-config-dir
-        emptyDir: {}  # This will hold the final generated config file
+
