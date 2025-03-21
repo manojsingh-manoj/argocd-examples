@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: downwardapi  # Same namespace as the deployment
+spec:
+  selector:
+    app: nginx  # This should match the labels of your deployment
+  ports:
+    - protocol: TCP
+      port: 80  # Port on the service
+      targetPort: 80  # Port on the container (nginx)
+      nodePort: 30080  # The NodePort (accessible externally)
+  type: NodePort  # Type of service to expose it via NodePort
