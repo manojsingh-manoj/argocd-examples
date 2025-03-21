@@ -31,14 +31,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.podIP  # Setting podIP as an environment variable
-        - name: POD_PHASE
-          valueFrom:
-            fieldRef:
-              fieldPath: status.phase  # Setting pod phase as an environment variable
-        - name: POD_RESTART_POLICY
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.restartPolicy  # Setting restartPolicy as an environment variable
       volumes:
       - name: downward-api-volume
         downwardAPI:
