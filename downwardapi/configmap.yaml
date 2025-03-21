@@ -23,13 +23,8 @@ data:
                 default_type application/json;
                 add_header Content-Type application/json;
 
-                 return 200 '{
-                  "pod_name": "'$(cat /etc/podinfo/pod_name)'",
-                  "namespace": "'$(cat /etc/podinfo/namespace)'",
-                  "pod_uid": "'$(cat /etc/podinfo/pod_uid)'",
-                  "node_name": "$NODE_NAME",
-                  "pod_ip": "$POD_IP"
-                }';
+                    return 200 '{"pod_name": "$$POD_NAME", "node_name": "$$NODE_NAME", "message": "Pod is running on Node $$NODE_NAME"}';
+
             }
         }
     }
