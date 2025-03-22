@@ -21,13 +21,8 @@ spec:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
-        - name: nginx-auth-secret-volume
-          mountPath: /etc/nginx/.htpasswd
-          subPath: .htpasswd
       volumes:
       - name: nginx-config-volume
         configMap:
           name: nginx-config
       - name: nginx-auth-secret-volume
-        secret:
-          secretName: nginx-auth-secret
